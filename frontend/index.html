@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haras des Moutonnières — Centre équestre & Poney-club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- GSAP & Lenis for Smooth Scrolling & Motion Design -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+<style>
+  :root{
+    --green-dark:#2f3b2a;
+    --green:#4a5d3f;
+    --cream:#f7f3ea;
+    --tan:#c9a876;
+    --brown:#5c4630;
+    --text:#3a352c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{/* No smooth scroll here, Lenis handles it */}
+  body{font-family:'Inter',sans-serif;color:var(--text);background:var(--cream);line-height:1.6;overflow-x:hidden;}
+  h1,h2,h3{font-family:'Playfair Display',serif;}
+  a{text-decoration:none;color:inherit;}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px;}
+  
+  /* Utils */
+  .overflow-hidden { overflow: hidden; }
+
+  /* Header */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(47,59,42,0);transition:background .4s ease, backdrop-filter .4s ease; padding: 24px 0;}
+  header.scrolled{background:rgba(47,59,42,0.92);backdrop-filter:blur(12px);padding: 12px 0;box-shadow:0 6px 24px rgba(0,0,0,0.18);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;max-width:1100px;margin:0 auto;}
+  .logo{color:var(--cream);font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;letter-spacing:0.5px; z-index: 101;}
+  .logo span{color:var(--tan);}
+  .nav ul{list-style:none;display:flex;gap:28px;}
+  .nav ul li a{position:relative;color:var(--cream);font-size:0.92rem;font-weight:500;opacity:0.9;transition:opacity .2s;}
+  .nav ul li a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--tan);transition:width .3s ease;}
+  .nav ul li a:hover{opacity:1;color:var(--tan);}
+  .nav ul li a:hover::after{width:100%;}
+  .menu-toggle{display:none;background:none;border:none;color:var(--cream);font-size:1.6rem;cursor:pointer; z-index: 101;}
+
+  /* Hero */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--cream);
+    padding:120px 24px 60px;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:-10%;
+    background:
+      linear-gradient(180deg, rgba(25,32,21,0.5), rgba(20,26,17,0.7)),
+      url('../src/img/vu_plane.jpg') center 60%/cover no-repeat;
+    z-index: 1;
+    will-change: transform;
+  }
+  .hero-inner{position:relative;z-index:2;max-width:720px;}
+  .hero p.eyebrow{letter-spacing:3px;text-transform:uppercase;font-size:0.78rem;color:var(--tan);margin-bottom:18px;font-weight:600;}
+  .hero h1{font-size:4rem;line-height:1.15;margin-bottom:18px; text-shadow: 0 4px 20px rgba(0,0,0,0.3);}
+  .hero p.lead{font-size:1.15rem;color:#e8e3d5;margin-bottom:34px;}
+  .btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  
+  .scroll-cue{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;width:22px;height:36px;border:2px solid rgba(247,243,234,0.55);border-radius:12px;}
+  .scroll-cue::before{content:"";position:absolute;top:6px;left:50%;width:4px;height:8px;background:var(--tan);border-radius:2px;transform:translateX(-50%);animation:scrollDot 1.8s ease infinite;}
+  @keyframes scrollDot{0%{opacity:1;top:6px;}70%{opacity:0;top:18px;}100%{opacity:0;top:6px;}}
+
+  .btn{padding:14px 32px;border-radius:30px;font-weight:600;font-size:0.95rem;transition:all .3s cubic-bezier(0.25, 1, 0.5, 1);display:inline-block; position: relative; overflow: hidden;}
+  .btn-primary{background:var(--tan);color:var(--green-dark); border: 1px solid var(--tan);}
+  .btn-primary:hover{background:transparent;color:var(--tan);transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,0.25);}
+  .btn-outline{border:1px solid var(--cream);color:var(--cream);}
+  .btn-outline:hover{background:var(--cream);color:var(--green-dark);transform:translateY(-3px);}
+
+  section{padding:120px 0;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 60px;}
+  .section-head p.eyebrow{letter-spacing:3px;text-transform:uppercase;font-size:0.78rem;color:var(--green);font-weight:600;margin-bottom:12px;}
+  .section-head h2{font-size:2.8rem;color:var(--green-dark);margin-bottom:16px;}
+  .section-head p.desc{color:#5f5a4e;font-size:1.05rem;}
+
+  /* Présentation */
+  .presentation{background:#fff;}
+  .pres-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .pres-text h3{color:var(--green-dark);font-size:2rem;margin-bottom:20px; line-height: 1.2;}
+  .pres-text p{margin-bottom:16px;color:#4a4438; font-size: 1.05rem;}
+  .pres-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;}
+  .stat{background:var(--cream);border-left:3px solid var(--tan);padding:20px; transition: transform 0.3s ease;}
+  .stat:hover {transform: translateX(5px);}
+  .stat strong{display:block;font-size:1.8rem;font-family:'Playfair Display',serif;color:var(--green-dark);}
+  .stat span{font-size:0.85rem;color:#6b6656; font-weight: 500;}
+  
+  .pres-img-wrapper { position: relative; height: 500px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+  .pres-image{
+    position: absolute; inset: -10%;
+    background: url('../src/img/plus_beaux_chev.jpg') center/cover no-repeat;
+    will-change: transform;
+  }
+
+  /* Installations */
+  .installations{background:var(--green-dark);color:var(--cream);}
+  .installations .section-head p.eyebrow{color:var(--tan);}
+  .installations .section-head h2{color:var(--cream);}
+  .installations .section-head p.desc{color:#c9c3b0;}
+  .install-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .install-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:28px 20px;text-align:center;border-radius:4px;transition:background .3s ease, transform .3s ease;}
+  .install-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-6px);}
+  .install-card .num{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--tan);margin-bottom:8px;}
+  .install-card .label{font-size:0.88rem;color:#d8d3c2;}
+
+  /* Activités */
+  .activites{background:var(--cream);}
+  .act-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .act-card{background:#fff;padding:28px 24px;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.05);border-top:3px solid var(--tan);transition:transform .3s ease, box-shadow .3s ease;}
+  .act-card:hover{transform:translateY(-6px);box-shadow:0 16px 30px rgba(0,0,0,0.1);}
+  .act-card h4{color:var(--green-dark);font-size:1.05rem;margin-bottom:8px;font-family:'Inter',sans-serif;font-weight:600;}
+  .act-card p{font-size:0.88rem;color:#6b6656;}
+
+  /* Tarifs & Stages */
+  .tarifs-stages { background: var(--green-dark); color: var(--cream); position: relative; }
+  .tarifs-stages .section-head p.eyebrow { color: var(--tan); }
+  .tarifs-stages .section-head h2 { color: var(--cream); }
+  .tarifs-stages .section-head p.desc { color: #d8d3c2; }
+  .ts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .ts-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 8px; transition: transform 0.3s ease; }
+  .ts-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); border-color: var(--tan); }
+  .ts-card h3 { color: var(--tan); font-size: 1.8rem; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+  .ts-card h4 { color: #fff; font-size: 1.2rem; margin-top: 24px; margin-bottom: 12px; font-weight: 600; }
+  .ts-list { list-style: none; margin-bottom: 20px; }
+  .ts-list li { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.15); }
+  .ts-list li:last-child { border-bottom: none; }
+  .ts-list li span:first-child { color: #d8d3c2; }
+  .ts-list li span:last-child { font-weight: 600; color: var(--tan); font-size: 1.05rem; }
+  .ts-content p { color: #d8d3c2; margin-bottom: 12px; font-size: 0.95rem; }
+  .ts-content ul { padding-left: 20px; color: #d8d3c2; margin-bottom: 16px; font-size: 0.95rem; }
+  .ts-content ul li { margin-bottom: 6px; }
+
+  /* Carousel Galerie */
+  .galerie-carousel { padding: 80px 0; overflow: hidden; position: relative; background: #fff; }
+  .galerie-carousel .section-head { margin-bottom: 50px; }
+  .marquee-wrapper { display: flex; overflow: hidden; white-space: nowrap; position: relative; width: 100%; }
+  .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; }
+  .marquee:hover { animation-play-state: paused; }
+  .marquee img { height: 320px; width: 450px; object-fit: cover; border-radius: 12px; margin: 0 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.4s ease; cursor: pointer; }
+  .marquee img:hover { transform: scale(1.02); }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Contact */
+  .contact{background:#fff;}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px; align-items: stretch;}
+  .contact-card{background:var(--cream);padding:40px;border-radius:8px; transition: transform .3s ease;}
+  .contact-card:hover{transform:translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05);}
+  .contact-card h3{color:var(--green-dark);font-size:1.5rem;margin-bottom:8px;}
+  .contact-card .role{color:var(--tan);font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px; display: block;}
+  .contact-card a.phone{display:inline-block;margin-top:10px;color:var(--green-dark);font-weight:600; font-size: 1.1rem; border-bottom: 2px solid transparent; transition: border-color 0.3s;}
+  .contact-card a.phone:hover { border-color: var(--tan); }
+  .contact-people{display:flex;flex-direction:column;gap:24px;}
+  
+  .location-box{background:var(--green-dark);color:var(--cream);padding:50px;border-radius:8px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;}
+  .location-box::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(201,168,118,0.1) 0%, transparent 70%); pointer-events: none; }
+  .location-box h3{margin-bottom:20px;color:var(--cream); font-size: 2rem;}
+  .location-box p{color:#d8d3c2;font-size:1.05rem;margin-bottom:12px; display: flex; align-items: center; gap: 10px;}
+  .location-box p::before { content: "•"; color: var(--tan); }
+
+  footer{background:var(--green-dark);color:#a9a58f;text-align:center;padding:40px 24px;font-size:0.9rem;border-top:1px solid rgba(255,255,255,0.05);}
+  footer strong{color:var(--tan);}
+
+  @media (max-width:820px){
+    section { padding: 80px 0; }
+    .section-head { margin-bottom: 40px; }
+    .section-head h2 { font-size: 2.2rem; }
+    .nav ul{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--green-dark);flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:30px; transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 100;}
+    .nav ul.open{transform: translateY(0);}
+    .nav ul li a { font-size: 1.5rem; padding: 10px; display: block; }
+    .menu-toggle{display:block; position: relative;}
+    .hero{min-height: 100dvh; padding: 100px 20px 40px;}
+    .hero h1{font-size:2.8rem;}
+    .pres-grid, .contact-grid{grid-template-columns:1fr; gap: 40px;}
+    .pres-stats { grid-template-columns: 1fr; gap: 16px; margin-top: 24px; }
+    .install-grid{grid-template-columns:repeat(2,1fr); gap: 16px;}
+    .act-grid{grid-template-columns:1fr; gap: 20px;}
+    .ts-grid{grid-template-columns:1fr; gap: 30px;}
+    .ts-card{padding: 24px 20px;}
+    .pres-img-wrapper { height: 350px; }
+    .contact-card { padding: 30px 20px; }
+    .location-box { padding: 30px 20px; }
+    .btn { padding: 14px 24px; width: 100%; max-width: 320px; text-align: center; }
+    .btn-row { flex-direction: column; width: 100%; align-items: center; }
+  }
+  @media (max-width:520px){
+    section { padding: 60px 0; }
+    .hero h1{font-size:2.2rem;}
+    .hero p.lead{font-size: 1.05rem; margin-bottom: 24px;}
+    .section-head h2 { font-size: 1.8rem; }
+    .pres-text h3 { font-size: 1.6rem; }
+    .install-grid{grid-template-columns:1fr;}
+    .pres-img-wrapper { height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="nav">
+    <div class="logo">Haras des <span>Moutonnières</span></div>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    <ul>
+      <li><a href="#presentation" class="nav-link">Présentation</a></li>
+      <li><a href="#installations" class="nav-link">Installations</a></li>
+      <li><a href="#activites" class="nav-link">Activités</a></li>
+      <li><a href="#contact" class="nav-link">Nous trouver</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-bg" data-speed="0.5"></div>
+  <div class="hero-inner">
+    <div class="overflow-hidden"><p class="eyebrow gs-reveal">Val-au-Perche · Orne</p></div>
+    <div class="overflow-hidden"><h1 class="gs-reveal">Haras des Moutonnières</h1></div>
+    <div class="overflow-hidden"><p class="lead gs-reveal">Centre équestre & poney-club au cœur du Perche — 14 hectares dédiés à l'équitation, du poney-club dès 3 ans à la préparation aux formations fédérales.</p></div>
+    <div class="btn-row gs-reveal">
+      <a href="#contact" class="btn btn-primary nav-link">Nous contacter</a>
+      <a href="#activites" class="btn btn-outline nav-link">Découvrir les activités</a>
+    </div>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<section class="presentation" id="presentation">
+  <div class="container">
+    <div class="pres-grid">
+      <div class="pres-text">
+        <p class="eyebrow gs-fade" style="color:var(--green);letter-spacing:2px;text-transform:uppercase;font-size:0.78rem;font-weight:600;margin-bottom:10px;">Présentation</p>
+        <h3 class="gs-fade">Un domaine au cœur du Perche</h3>
+        <p class="gs-fade">Le Haras des Moutonnières est situé à Val-au-Perche, à 2 heures de Paris, 1 heure de Chartres et 45 minutes du Mans.</p>
+        <p class="gs-fade">Marie-Delphine Debacq et Victorien Besse vous accueillent toute l'année sur une propriété de 14 hectares, dont 12 hectares de prairies.</p>
+        <div class="pres-stats">
+          <div class="stat gs-stagger"><strong class="counter" data-target="14">0</strong><span>hectares — Propriété totale</span></div>
+          <div class="stat gs-stagger"><strong class="counter" data-target="12">0</strong><span>hectares — Prairies</span></div>
+          <div class="stat gs-stagger"><strong class="counter" data-target="750">0</strong><span>mètres — Piste de galop</span></div>
+          <div class="stat gs-stagger"><strong class="counter" data-target="3">0</strong><span>ans — Accueil poney-club</span></div>
+        </div>
+      </div>
+      <div class="pres-img-wrapper gs-fade">
+        <div class="pres-image" data-speed="0.8"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="installations" id="installations">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow gs-fade">Équipements</p>
+      <h2 class="gs-fade">Nos installations</h2>
+      <p class="desc gs-fade">Des infrastructures pensées pour l'ensemble des disciplines équestres, du travail quotidien à la compétition.</p>
+    </div>
+    <div class="install-grid">
+      <div class="install-card gs-stagger2"><div class="num">30×15 m</div><div class="label">Manège</div></div>
+      <div class="install-card gs-stagger2"><div class="num">65×35 m</div><div class="label">Carrière T&C</div></div>
+      <div class="install-card gs-stagger2"><div class="num">40×20 m</div><div class="label">Carrière</div></div>
+      <div class="install-card gs-stagger2"><div class="num">750 m</div><div class="label">Piste de galop</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="activites" id="activites">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow gs-fade">Ce que nous proposons</p>
+      <h2 class="gs-fade">Nos activités</h2>
+      <p class="desc gs-fade">Du poney-club aux formations professionnelles, un accompagnement à chaque étape.</p>
+    </div>
+    <div class="act-grid">
+      <div class="act-card gs-stagger3"><h4>Centre équestre</h4><p>Cours et pratique de l'équitation pour tous niveaux, toute l'année.</p></div>
+      <div class="act-card gs-stagger3"><h4>Poney-club</h4><p>Dès 3 ans en main, 5 ans en cours — une initiation en douceur.</p></div>
+      <div class="act-card gs-stagger3"><h4>Stages</h4><p>Stages thématiques et intensifs, vacances scolaires et week-ends.</p></div>
+      <div class="act-card gs-stagger3"><h4>Examens fédéraux</h4><p>Préparation et passage des galops et examens FFE.</p></div>
+      <div class="act-card gs-stagger3"><h4>Débourrage & pré-entraînement</h4><p>Prise en main et éducation des jeunes chevaux.</p></div>
+      <div class="act-card gs-stagger3"><h4>Pension</h4><p>Pension en box avec travail du cheval, ou pension au pré / pré-box l'hiver.</p></div>
+      <div class="act-card gs-stagger3"><h4>CSO & CCE</h4><p>Sorties et coaching en concours de saut d'obstacles et complet.</p></div>
+      <div class="act-card gs-stagger3"><h4>Préparation BPJEPS</h4><p>Accompagnement pour les tests d'entrée en formation professionnelle.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="tarifs-stages" id="stages-tarifs">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow gs-fade">Infos pratiques</p>
+      <h2 class="gs-fade">Stages & Tarifs</h2>
+      <p class="desc gs-fade">Afin de favoriser une progression plus rapide, des stages vous sont proposés. Retrouvez également un aperçu de nos principaux tarifs.</p>
+    </div>
+    <div class="ts-grid">
+      
+      <!-- Stages -->
+      <div class="ts-card gs-stagger5">
+        <h3>Organisation des Stages</h3>
+        <div class="ts-content">
+          <p><strong>Stages à la demi-journée (durée : 3h)</strong></p>
+          <ul>
+            <li>Le matin : cavaliers à partir du Galop 3</li>
+            <li>L’après-midi : débutants à Galop 2</li>
+          </ul>
+          <h4>Contenu type d'une demi-journée :</h4>
+          <ul>
+            <li>30 minutes : pansage et préparation des chevaux</li>
+            <li>1 h 30 d’équitation</li>
+            <li>30 minutes : hippologie, soins aux chevaux</li>
+            <li>30 minutes : goûter (l'après-midi)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tarifs -->
+      <div class="ts-card gs-stagger5">
+        <h3>Tarifs Principaux</h3>
+        <h4>Stages Vacances</h4>
+        <ul class="ts-list">
+          <li><span>Stage ½ journée (Adhérent)</span><span>33 €</span></li>
+          <li><span>Stage ½ journée (Passager)</span><span>38 €</span></li>
+          <li><span>Stage journée (Adhérent)</span><span>47 €</span></li>
+          <li><span>Stage journée (Passager)</span><span>52 €</span></li>
+        </ul>
+        <h4>École d'Équitation</h4>
+        <ul class="ts-list">
+          <li><span>Cours passager (- de 16 ans)</span><span>25 €</span></li>
+          <li><span>Cours passager (+ de 16 ans)</span><span>30 €</span></li>
+          <li><span>Cours particulier (cheval du club)</span><span>46 €</span></li>
+          <li><span>Balade Shetland (- de 5 ans)</span><span>27 €</span></li>
+        </ul>
+        <p style="margin-top:20px; font-size:0.85rem; font-style:italic;">* Tarifs dégressifs, abonnements annuels et écurie de propriétaires (pension box à partir de 495€, pension pré à partir de 260€) disponibles. Contactez-nous pour le détail complet.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="galerie-carousel">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow gs-fade">En images</p>
+      <h2 class="gs-fade">Notre galerie</h2>
+    </div>
+  </div>
+  <div class="marquee-wrapper gs-fade">
+    <div class="marquee">
+      <!-- 7 images (first set) -->
+      <img src="../src/img/chev.jpg" alt="Galerie Haras" />
+      <img src="../src/img/cheval.jpg" alt="Galerie Haras" />
+      <img src="../src/img/cheval_monter.jpg" alt="Galerie Haras" />
+      <img src="../src/img/chevaux.jpg" alt="Galerie Haras" />
+      <img src="../src/img/plus_beaux_chev.jpg" alt="Galerie Haras" />
+      <img src="../src/img/saut.jpg" alt="Galerie Haras" />
+      <img src="../src/img/vu_plane.jpg" alt="Galerie Haras" />
+      <!-- 7 images (duplicate for seamless loop) -->
+      <img src="../src/img/chev.jpg" alt="Galerie Haras" />
+      <img src="../src/img/cheval.jpg" alt="Galerie Haras" />
+      <img src="../src/img/cheval_monter.jpg" alt="Galerie Haras" />
+      <img src="../src/img/chevaux.jpg" alt="Galerie Haras" />
+      <img src="../src/img/plus_beaux_chev.jpg" alt="Galerie Haras" />
+      <img src="../src/img/saut.jpg" alt="Galerie Haras" />
+      <img src="../src/img/vu_plane.jpg" alt="Galerie Haras" />
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow gs-fade">Contact</p>
+      <h2 class="gs-fade">Nous trouver</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-people">
+        <div class="contact-card gs-stagger4">
+          <span class="role">Direction</span>
+          <h3>Marie-Delphine Debacq</h3>
+          <a class="phone" href="tel:0671005531">06 71 00 55 31</a>
+        </div>
+        <div class="contact-card gs-stagger4">
+          <span class="role">Direction</span>
+          <h3>Victorien Besse</h3>
+          <a class="phone" href="tel:0786146698">07 86 14 66 98</a>
+        </div>
+      </div>
+      <div class="location-box gs-fade">
+        <h3>Val-au-Perche</h3>
+        <p>À 2h de Paris</p>
+        <p>À 1h de Chartres</p>
+        <p>À 45 min du Mans</p>
+        <p style="margin-top:20px;color:var(--tan);font-weight:600; font-size:1.1rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">Propriété de 14 hectares en plein cœur du Perche.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <strong>Haras des Moutonnières by Chaya Aouate</strong></p>
+</footer>
+
+<script>
+  // Initialize Lenis Smooth Scrolling
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
+  })
+
+  // get scroll value
+  lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+    ScrollTrigger.update();
+  })
+
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+
+  requestAnimationFrame(raf)
+
+  // GSAP ScrollTrigger Integration with Lenis
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Header Scroll Effect
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile Menu
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navUl = document.querySelector('.nav ul');
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  menuToggle.addEventListener('click', () => {
+    navUl.classList.toggle('open');
+    menuToggle.textContent = navUl.classList.contains('open') ? '✕' : '☰';
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      if(window.innerWidth <= 820) {
+        navUl.classList.remove('open');
+        menuToggle.textContent = '☰';
+      }
+      
+      const targetId = link.getAttribute('href');
+      if(targetId.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(targetId);
+        lenis.scrollTo(target, { offset: -80 });
+      }
+    });
+  });
+
+  // Initial Hero Reveal
+  const tlHero = gsap.timeline();
+  tlHero.from(".hero-bg", { scale: 1.2, duration: 2, ease: "power3.out" })
+        .from(".gs-reveal", { y: 100, opacity: 0, duration: 1, stagger: 0.2, ease: "power4.out" }, "-=1.5");
+
+  // Parallax on Backgrounds
+  gsap.to(".hero-bg", {
+    yPercent: 20,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+  gsap.to(".pres-image", {
+    yPercent: 20,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".pres-img-wrapper",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+  // Fade up animations
+  gsap.utils.toArray('.gs-fade').forEach(el => {
+    gsap.from(el, {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        once: true
+      }
+    });
+  });
+
+  // Stagger Animations for grids
+  const staggers = [
+    { trigger: '.pres-stats', elements: '.gs-stagger' },
+    { trigger: '.install-grid', elements: '.gs-stagger2' },
+    { trigger: '.act-grid', elements: '.gs-stagger3' },
+    { trigger: '.ts-grid', elements: '.gs-stagger5' },
+    { trigger: '.contact-people', elements: '.gs-stagger4' }
+  ];
+
+  staggers.forEach(stag => {
+    gsap.from(stag.elements, {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: stag.trigger,
+        start: "top 85%",
+        once: true
+      }
+    });
+  });
+
+  // Animated Counters
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    ScrollTrigger.create({
+      trigger: counter,
+      start: "top 90%",
+      once: true,
+      onEnter: () => {
+        const target = +counter.getAttribute('data-target');
+        gsap.to(counter, {
+          innerHTML: target,
+          duration: 2,
+          snap: { innerHTML: 1 },
+          ease: "power1.out"
+        });
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
