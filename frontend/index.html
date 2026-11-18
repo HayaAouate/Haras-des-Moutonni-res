@@ -77,6 +77,9 @@
   .nav ul li a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--client-yellow);transition:width .3s ease;}
   .nav ul li a:hover{opacity:1;color:var(--client-yellow);}
   .nav ul li a:hover::after{width:100%;}
+  .nav ul li a.nav-cta{background:var(--client-yellow);color:#1b2518;font-weight:700;padding:9px 18px;border-radius:24px;opacity:1;}
+  .nav ul li a.nav-cta::after{display:none;}
+  .nav ul li a.nav-cta:hover{background:var(--client-blue);color:#fff;}
   .menu-toggle{display:none;background:none;border:none;color:var(--cream);font-size:1.6rem;cursor:pointer; z-index: 101;}
 
   /* Hero */
@@ -92,7 +95,7 @@
     position:absolute;inset:-10%;
     background:
       linear-gradient(180deg, rgba(25,32,21,0.52), rgba(20,26,17,0.72)),
-      url('img/vu_plane.jpg') center 60%/cover no-repeat;
+      url('img/vu_plane.jpg') center 100%/cover no-repeat; /* cadrage bas : le Haras est centré, moins de forêt */
     z-index: 1;
     will-change: transform;
   }
@@ -169,11 +172,28 @@
   .installations .section-head p.eyebrow{color:var(--client-yellow);}
   .installations .section-head h2{color:var(--cream);}
   .installations .section-head p.desc{color:#c9c3b0;}
-  .install-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
-  .install-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:28px 20px;text-align:center;border-radius:4px;transition:background .3s ease, transform .3s ease, border-color .3s ease, box-shadow .3s ease; aspect-ratio: 1/1; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-  .install-card:hover{background:rgba(40,15,169,0.18);border-color:var(--client-yellow);transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,0.3);}
-  .install-card .num{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--client-yellow);margin-bottom:8px;font-weight:700;}
-  .install-card .label{font-size:0.88rem;color:#d8d3c2;}
+  /* Vue aérienne d'en-tête (recadrée pour masquer l'aile de l'avion à droite) */
+  .inst-hero{position:relative;height:460px;border-radius:12px;overflow:hidden;margin-bottom:80px;box-shadow:0 24px 50px rgba(0,0,0,0.35);border:1px solid rgba(243,192,13,0.2);}
+  .inst-hero img{position:absolute;top:-15%;left:0;width:118%;height:130%;object-fit:cover;object-position:0 45%;will-change:transform;}
+  .inst-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(20,26,17,0) 35%, rgba(20,26,17,0.85) 100%);}
+  .inst-hero-stats{position:absolute;left:0;right:0;bottom:0;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:28px 32px;}
+  .inst-stat{border-left:3px solid var(--client-yellow);padding-left:14px;}
+  .inst-stat strong{display:block;font-family:'Playfair Display',serif;font-size:1.9rem;color:#fff;line-height:1.1;}
+  .inst-stat span{font-size:0.82rem;color:#d8d3c2;}
+
+  /* Blocs alternés photo / texte */
+  .inst-row{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:96px;}
+  .inst-row:last-child{margin-bottom:0;}
+  .inst-row:nth-child(even) .inst-media{order:2;}
+  .inst-media{position:relative;height:420px;border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);}
+  .inst-media img{position:absolute;top:-10%;left:0;width:100%;height:120%;object-fit:cover;will-change:transform;}
+  .inst-num{font-family:'Playfair Display',serif;font-size:2.6rem;color:var(--client-yellow);font-weight:700;line-height:1;margin-bottom:12px;}
+  .inst-text h3{font-size:1.9rem;color:#fff;margin-bottom:16px;line-height:1.2;}
+  .inst-text p{color:#d8d3c2;margin-bottom:14px;font-size:1.02rem;}
+  .inst-list{list-style:none;margin-top:14px;}
+  .inst-list li{padding:8px 0 8px 22px;position:relative;color:#e6e1d0;font-size:0.95rem;border-bottom:1px dashed rgba(255,255,255,0.12);}
+  .inst-list li:last-child{border-bottom:none;}
+  .inst-list li::before{content:"";position:absolute;left:0;top:15px;width:8px;height:8px;border-radius:50%;background:var(--client-yellow);}
 
   /* Activités */
   .activites{background:var(--cream);}
@@ -202,12 +222,16 @@
   .ts-content p { color: #d8d3c2; margin-bottom: 12px; font-size: 0.95rem; }
   .ts-content ul { padding-left: 20px; color: #d8d3c2; margin-bottom: 16px; font-size: 0.95rem; }
   .ts-content ul li { margin-bottom: 6px; }
+  .ts-note { margin-top: 18px; font-size: 0.85rem; font-style: italic; color: #b9b3a0; }
+  .ts-highlight { background: rgba(243,192,13,0.1); border: 1px solid rgba(243,192,13,0.3); border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+  .ts-highlight strong { color: var(--client-yellow); display: block; margin-bottom: 4px; }
+  .ts-highlight p { margin: 0; font-size: 0.9rem; }
 
   /* Carousel Galerie */
   .galerie-carousel { padding: 80px 0; overflow: hidden; position: relative; background: #fff; }
   .galerie-carousel .section-head { margin-bottom: 50px; }
   .marquee-wrapper { display: flex; overflow: hidden; white-space: nowrap; position: relative; width: 100%; }
-  .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; }
+  .marquee { display: flex; width: max-content; animation: scroll 75s linear infinite; }
   .marquee:hover { animation-play-state: paused; }
   .marquee img { height: 320px; width: 450px; object-fit: cover; border-radius: 12px; margin: 0 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.4s ease; cursor: pointer; }
   .marquee img:hover { transform: scale(1.02); }
@@ -235,12 +259,44 @@
   .contact-card a.phone{display:inline-block;margin-top:10px;color:var(--green-dark);font-weight:600; font-size: 1.1rem; border-bottom: 2px solid transparent; transition: border-color 0.3s, color 0.3s;}
   .contact-card a.phone:hover { border-color: var(--client-yellow); color: var(--client-blue); }
   .contact-people{display:flex;flex-direction:column;gap:24px;}
-  
-  .location-box{background:var(--green-dark);color:var(--cream);padding:50px;border-radius:8px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; border: 1px solid rgba(243,192,13,0.15);}
+
+  /* Portraits de l'équipe : deux grands cadres verticaux */
+  .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:80px;}
+  .team-card{position:relative;height:640px;border-radius:14px;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,0.18);border:1px solid rgba(0,0,0,0.05);}
+  .team-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(0.25,1,0.5,1);}
+  .team-card:hover img{transform:scale(1.04);}
+  .team-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(20,26,17,0) 38%, rgba(20,26,17,0.55) 62%, rgba(20,26,17,0.94) 100%);}
+  .team-info{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:36px 34px;color:var(--cream);}
+  .team-info .role{display:inline-block;background:rgba(243,192,13,0.16);color:var(--client-yellow);border:1px solid rgba(243,192,13,0.4);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:5px 14px;border-radius:20px;margin-bottom:14px;}
+  .team-info h3{font-size:1.9rem;color:#fff;margin-bottom:6px;line-height:1.15;}
+  .team-info .activities{color:#d8d3c2;font-size:0.98rem;margin-bottom:18px;}
+  .team-info a{display:flex;align-items:center;gap:10px;color:var(--cream);font-weight:600;font-size:1rem;margin-top:8px;transition:color .2s;}
+  .team-info a:hover{color:var(--client-yellow);}
+  .team-info a svg{width:18px;height:18px;flex-shrink:0;fill:var(--client-yellow);}
+
+  /* Adresse + carte */
+  .location-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:stretch;}
+  .location-box{background:var(--green-dark);color:var(--cream);padding:46px;border-radius:12px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; border: 1px solid rgba(243,192,13,0.15);}
   .location-box::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 200%; background: radial-gradient(circle, rgba(243,192,13,0.12) 0%, transparent 70%); pointer-events: none; }
-  .location-box h3{margin-bottom:20px;color:var(--cream); font-size: 2rem;}
-  .location-box p{color:#d8d3c2;font-size:1.05rem;margin-bottom:12px; display: flex; align-items: center; gap: 10px;}
+  .location-box > *{position:relative;z-index:1;}
+  .location-box h3{margin-bottom:16px;color:var(--cream); font-size: 2rem;}
+  .location-box address{font-style:normal;color:#fff;font-size:1.1rem;line-height:1.6;margin-bottom:20px;}
+  .location-box p{color:#d8d3c2;font-size:1rem;margin-bottom:10px; display: flex; align-items: center; gap: 10px;}
   .location-box p::before { content: "•"; color: var(--client-yellow); }
+  .location-box .btn{align-self:flex-start;margin-top:22px;}
+  .location-notice{background:rgba(243,192,13,0.1);border-left:3px solid var(--client-yellow);padding:16px 18px;border-radius:0 8px 8px 0;margin-top:26px;}
+  .location-notice p{display:block;color:#e6e1d0;font-size:0.93rem;margin:0;}
+  .location-notice p::before{display:none;}
+  .location-notice strong{color:var(--client-yellow);display:block;margin-bottom:4px;}
+  .map-box{border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.06);min-height:420px;background:#e8e4d8;}
+  .map-box iframe{width:100%;height:100%;min-height:420px;border:0;display:block;filter:saturate(0.85);}
+
+  /* Inscription aux cours */
+  .inscription-box{margin-top:40px;background:var(--cream);border:1px solid rgba(40,15,169,0.15);border-radius:12px;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;}
+  .inscription-box h3{color:var(--green-dark);font-size:1.5rem;margin-bottom:8px;}
+  .inscription-box p{color:#5f5a4e;font-size:0.98rem;max-width:620px;}
+  .inscription-box .btn-blue{background:var(--client-blue);color:#fff;border:1.5px solid var(--client-blue);white-space:nowrap;}
+  .inscription-box .btn-blue:hover{background:var(--client-yellow);color:#1b2518;border-color:var(--client-yellow);transform:translateY(-3px);box-shadow:0 10px 24px rgba(243,192,13,0.35);}
 
   footer{background:var(--green-dark);color:#a9a58f;text-align:center;padding:50px 24px;font-size:0.9rem;border-top:1px solid rgba(243,192,13,0.18);}
   .footer-inner{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:600px;margin:0 auto;}
@@ -248,6 +304,8 @@
   .footer-logo:hover{transform:scale(1.08) rotate(4deg);}
   footer strong{color:var(--client-yellow);}
   .footer-sub{font-size:0.85rem;color:#b4b09d;}
+  .footer-social a{color:var(--cream);font-weight:500;transition:color .2s;}
+  .footer-social a:hover{color:var(--client-yellow);}
 
   @media (max-width:820px){
     section { padding: 80px 0; }
@@ -255,7 +313,7 @@
     .section-head h2 { font-size: 2.2rem; }
     .logo-img{width:40px;height:40px;}
     .logo-text{font-size:1.15rem;}
-    .nav ul{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--green-dark);flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:30px; transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 100;}
+    .nav ul{position:fixed;top:0;left:0;right:0;height:100dvh;background:var(--green-dark);flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:30px; transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 100;}
     .nav ul.open{transform: translateY(0);}
     .nav ul li a { font-size: 1.5rem; padding: 10px; display: block; }
     .menu-toggle{display:block; position: relative;}
@@ -263,7 +321,16 @@
     .hero h1{font-size:2.8rem;}
     .pres-grid, .contact-grid{grid-template-columns:1fr; gap: 40px;}
     .pres-stats { grid-template-columns: 1fr; gap: 16px; margin-top: 24px; }
-    .install-grid{grid-template-columns:repeat(2,1fr); gap: 16px;}
+    .inst-hero { height: 360px; margin-bottom: 56px; }
+    .inst-hero-stats { grid-template-columns: repeat(2,1fr); padding: 20px; }
+    .inst-row { grid-template-columns: 1fr; gap: 28px; margin-bottom: 64px; }
+    .inst-row:nth-child(even) .inst-media { order: 0; }
+    .inst-media { height: 300px; }
+    .inst-text h3 { font-size: 1.5rem; }
+    .team-grid { grid-template-columns: 1fr; gap: 24px; margin-bottom: 56px; }
+    .team-card { height: 540px; }
+    .location-grid { grid-template-columns: 1fr; gap: 24px; }
+    .inscription-box { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
     .act-grid{grid-template-columns:1fr; gap: 20px;}
     .ts-grid{grid-template-columns:1fr; gap: 30px;}
     .ts-card{padding: 24px 20px;}
@@ -279,7 +346,13 @@
     .hero p.lead{font-size: 1.05rem; margin-bottom: 24px;}
     .section-head h2 { font-size: 1.8rem; }
     .pres-text h3 { font-size: 1.6rem; }
-    .install-grid{grid-template-columns:1fr;}
+    .inst-hero { height: 300px; }
+    .inst-hero-stats { grid-template-columns: 1fr 1fr; gap: 10px; padding: 16px; }
+    .inst-stat strong { font-size: 1.4rem; }
+    .inst-media { height: 240px; }
+    .team-card { height: 480px; }
+    .team-info { padding: 26px 22px; }
+    .location-box { padding: 28px 20px; }
     .pres-img-wrapper { height: 280px; }
   }
 </style>
@@ -297,8 +370,9 @@
       <li><a href="#presentation" class="nav-link">Présentation</a></li>
       <li><a href="#installations" class="nav-link">Installations</a></li>
       <li><a href="#activites" class="nav-link">Activités</a></li>
-      <li><a href="#stages-tarifs" class="nav-link">Stages & Tarifs</a></li>
-      <li><a href="#contact" class="nav-link">Nous trouver</a></li>
+      <li><a href="#stages-tarifs" class="nav-link">Tarifs</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li><a href="https://harasdesmoutonnieres.fr/hdm61/" class="nav-link nav-cta" target="_blank" rel="noopener">Inscription aux cours</a></li>
     </ul>
   </div>
 </header>
@@ -345,13 +419,97 @@
     <div class="section-head">
       <p class="eyebrow gs-fade">Équipements</p>
       <h2 class="gs-fade">Nos installations</h2>
-      <p class="desc gs-fade">Des infrastructures pensées pour l'ensemble des disciplines équestres, du travail quotidien à la compétition.</p>
+      <p class="desc gs-fade">Un domaine de 14 hectares, dont 12 hectares de prairies, avec des infrastructures pensées pour l'ensemble des disciplines équestres, du travail quotidien à la compétition.</p>
     </div>
-    <div class="install-grid">
-      <div class="install-card gs-fade"><div class="num">30×15 m</div><div class="label">Manège</div></div>
-      <div class="install-card gs-fade"><div class="num">65×35 m</div><div class="label">Carrière T&C</div></div>
-      <div class="install-card gs-fade"><div class="num">40×20 m</div><div class="label">Carrière</div></div>
-      <div class="install-card gs-fade"><div class="num">750 m</div><div class="label">Piste de galop</div></div>
+
+    <!-- Vue aérienne n°2 — fichier attendu : img/vu_plane_2.jpg (aile de l'avion masquée par le cadrage CSS) -->
+    <div class="inst-hero gs-fade">
+      <img src="img/vu_plane_2.jpg" alt="Vue aérienne du Haras des Moutonnières" data-parallax>
+      <div class="inst-hero-stats">
+        <div class="inst-stat"><strong>14 hectares</strong><span>Propriété totale</span></div>
+        <div class="inst-stat"><strong>12 hectares</strong><span>de prairies</span></div>
+        <div class="inst-stat"><strong>4 · 2 · 6</strong><span>grands prés · prés moyens · paddocks</span></div>
+        <div class="inst-stat"><strong>21</strong><span>boxes</span></div>
+      </div>
+    </div>
+
+    <!-- Photos des installations envoyées par le client (Victorien Besse) -->
+    <div class="inst-rows">
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/carriere-01.webp" alt="La carrière Toubin &amp; Clément de 65 × 35 m et ses obstacles" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">65 × 35 m</div>
+          <h3 class="gs-fade">La carrière Toubin & Clément</h3>
+          <p class="gs-fade">Une grande carrière en sol Toubin & Clément, drainant et stable par tous les temps, pour le travail sur le plat comme pour le saut d'obstacles.</p>
+          <ul class="inst-list gs-fade">
+            <li>Travail sur le plat et saut d'obstacles</li>
+            <li>Praticable toute l'année</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/manege-01.webp" alt="Le manège couvert de 30 × 15 m" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">30 × 15 m</div>
+          <h3 class="gs-fade">Le manège</h3>
+          <p class="gs-fade">Un manège couvert pour travailler à l'abri, quelle que soit la météo : cours du poney-club, séances de dressage, débourrages et travail des jeunes chevaux.</p>
+        </div>
+      </div>
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/piste-galop-01.webp" alt="Cavaliers sur la piste de galop de 750 m" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">750 m</div>
+          <h3 class="gs-fade">La piste de galop</h3>
+          <p class="gs-fade">Une piste en boucle de 750 mètres sur fond de grès concassé, avec une portion sablée. Idéale pour le trotting, les canters et la préparation physique des chevaux.</p>
+          <ul class="inst-list gs-fade">
+            <li>Boucle complète de 750 m</li>
+            <li>Fond en grès concassé + portion sablée</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/ecuries-allee-milieu-01.webp" alt="L'allée du milieu des écuries" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">21 boxes</div>
+          <h3 class="gs-fade">Les écuries</h3>
+          <p class="gs-fade">21 boxes répartis entre deux espaces, pour les chevaux du club comme pour les chevaux de propriétaires. Selleries, aire de préparation et douche à proximité immédiate.</p>
+        </div>
+      </div>
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/pres-chevaux-01.webp" alt="Chevaux au pré" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">12 hectares</div>
+          <h3 class="gs-fade">Prairies & paddocks</h3>
+          <p class="gs-fade">Douze hectares de prairies pour que les chevaux vivent au plus près de leurs besoins : de l'herbe, de l'espace et la vie en troupeau.</p>
+          <ul class="inst-list gs-fade">
+            <li>4 grands prés</li>
+            <li>2 prés de taille moyenne</li>
+            <li>6 paddocks</li>
+            <li>Des prés dédiés aux chevaux, aux grands poneys, aux petits poneys et aux chevaux au repos</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="inst-row">
+        <div class="inst-media gs-fade"><img src="img/installations/sellerie-club-01.webp" alt="La sellerie club" loading="lazy" data-parallax></div>
+        <div class="inst-text">
+          <div class="inst-num gs-fade">Au quotidien</div>
+          <h3 class="gs-fade">Les installations annexes</h3>
+          <p class="gs-fade">Tout ce qu'il faut autour des chevaux et des cavaliers pour un quotidien confortable.</p>
+          <ul class="inst-list gs-fade">
+            <li>Sellerie club et sellerie propriétaires</li>
+            <li>Grange et aire de préparation</li>
+            <li>Douche pour les chevaux</li>
+            <li>Club-house</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -380,48 +538,86 @@
   <div class="container">
     <div class="section-head">
       <p class="eyebrow gs-fade">Infos pratiques</p>
-      <h2 class="gs-fade">Stages & Tarifs</h2>
-      <p class="desc gs-fade">Afin de favoriser une progression plus rapide, des stages vous sont proposés. Retrouvez également un aperçu de nos principaux tarifs.</p>
+      <h2 class="gs-fade">Nos tarifs</h2>
+      <p class="desc gs-fade">École d'équitation, stages, écurie de propriétaires et autres prestations : retrouvez l'essentiel de nos tarifs. Pour le détail complet, contactez-nous.</p>
     </div>
     <div class="ts-grid">
-      
-      <!-- Stages -->
-      <div class="ts-card gs-stagger5">
-        <h3>Organisation des Stages</h3>
-        <div class="ts-content">
-          <p><strong>Stages à la demi-journée (durée : 3h)</strong></p>
-          <ul>
-            <li>Le matin : cavaliers à partir du Galop 3</li>
-            <li>L’après-midi : débutants à Galop 2</li>
-          </ul>
-          <h4>Contenu type d'une demi-journée :</h4>
-          <ul>
-            <li>30 minutes : pansage et préparation des chevaux</li>
-            <li>1 h 30 d’équitation</li>
-            <li>30 minutes : hippologie, soins aux chevaux</li>
-            <li>30 minutes : goûter (l'après-midi)</li>
-          </ul>
-        </div>
-      </div>
 
-      <!-- Tarifs -->
+      <!-- École d'équitation -->
       <div class="ts-card gs-stagger5">
-        <h3>Tarifs Principaux</h3>
-        <h4>Stages Vacances</h4>
-        <ul class="ts-list">
-          <li><span>Stage ½ journée (Adhérent)</span><span>33 €</span></li>
-          <li><span>Stage ½ journée (Passager)</span><span>38 €</span></li>
-          <li><span>Stage journée (Adhérent)</span><span>47 €</span></li>
-          <li><span>Stage journée (Passager)</span><span>52 €</span></li>
-        </ul>
-        <h4>École d'Équitation</h4>
+        <h3>École d'équitation</h3>
+        <div class="ts-content">
+          <p>Cours collectifs toute l'année, du poney-club dès 5 ans à la préparation des Galops et examens fédéraux.</p>
+        </div>
+        <h4>Cours passagers</h4>
         <ul class="ts-list">
           <li><span>Cours passager (- de 16 ans)</span><span>25 €</span></li>
           <li><span>Cours passager (+ de 16 ans)</span><span>30 €</span></li>
           <li><span>Cours particulier (cheval du club)</span><span>46 €</span></li>
-          <li><span>Balade Shetland (- de 5 ans)</span><span>27 €</span></li>
         </ul>
-        <p style="margin-top:20px; font-size:0.85rem; font-style:italic;">* Tarifs dégressifs, abonnements annuels et écurie de propriétaires (pension box à partir de 495€, pension pré à partir de 260€) disponibles. Contactez-nous pour le détail complet.</p>
+        <p class="ts-note">Abonnements annuels et tarifs dégressifs disponibles. Les inscriptions aux cours se font sur le site dédié aux adhérents.</p>
+      </div>
+
+      <!-- Stages -->
+      <div class="ts-card gs-stagger5">
+        <h3>Stages</h3>
+        <div class="ts-content">
+          <p>Afin de favoriser une progression plus rapide, des stages à la demi-journée (3 h) sont proposés pendant les vacances scolaires.</p>
+          <ul>
+            <li>Le matin : cavaliers à partir du Galop 3</li>
+            <li>L'après-midi : débutants à Galop 2</li>
+          </ul>
+        </div>
+        <ul class="ts-list">
+          <li><span>Stage ½ journée (adhérent)</span><span>33 €</span></li>
+          <li><span>Stage ½ journée (passager)</span><span>38 €</span></li>
+        </ul>
+        <h4>Contenu d'une demi-journée</h4>
+        <div class="ts-content">
+          <ul>
+            <li>30 min : pansage et préparation des chevaux</li>
+            <li>1 h 30 d'équitation</li>
+            <li>30 min : hippologie, soins aux chevaux</li>
+            <li>30 min : goûter (l'après-midi)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Écurie de propriétaires -->
+      <div class="ts-card gs-stagger5">
+        <h3>Écurie de propriétaires</h3>
+        <div class="ts-content">
+          <p>Pension en box ou pension au pré, pour un ou plusieurs chevaux. Tarifs mensuels.</p>
+        </div>
+        <h4>Pension box</h4>
+        <ul class="ts-list">
+          <li><span>1<sup>er</sup> cheval</span><span>520 € / mois</span></li>
+          <li><span>2<sup>e</sup> cheval</span><span>495 € / mois</span></li>
+        </ul>
+        <h4>Pension pré</h4>
+        <ul class="ts-list">
+          <li><span>1<sup>er</sup> cheval</span><span>280 € / mois</span></li>
+          <li><span>2<sup>e</sup> cheval</span><span>260 € / mois</span></li>
+        </ul>
+        <div class="ts-highlight">
+          <strong>Pension pré complémentée · 320 € / mois</strong>
+          <p>Pour les chevaux nécessitant un régime alimentaire spécifique ou les chevaux âgés ayant besoin d'une alimentation complémentée toute l'année.</p>
+        </div>
+      </div>
+
+      <!-- Autres prestations -->
+      <div class="ts-card gs-stagger5">
+        <h3>Autres prestations</h3>
+        <div class="ts-content">
+          <p>Pour les plus petits comme pour les chevaux en formation, nous proposons également :</p>
+        </div>
+        <ul class="ts-list">
+          <li><span>Balade en main Shetland (- de 5 ans)</span><span>27 €</span></li>
+          <li><span>Débourrage & pré-entraînement</span><span>Sur devis</span></li>
+          <li><span>Coaching & sorties en concours</span><span>Nous consulter</span></li>
+          <li><span>Préparation BPJEPS</span><span>Nous consulter</span></li>
+        </ul>
+        <p class="ts-note">Les balades en main se font sur réservation : pensez à nous appeler pour réserver votre créneau.</p>
       </div>
 
     </div>
@@ -437,22 +633,32 @@
   </div>
   <div class="marquee-wrapper gs-fade">
     <div class="marquee">
-      <!-- 7 images (first set) -->
-      <img src="img/chev.jpg" alt="Galerie Haras" />
-      <img src="img/cheval.jpg" alt="Galerie Haras" />
-      <img src="img/cheval_monter.jpg" alt="Galerie Haras" />
-      <img src="img/chevaux.jpg" alt="Galerie Haras" />
-      <img src="img/plus_beaux_chev.jpg" alt="Galerie Haras" />
-      <img src="img/saut.jpg" alt="Galerie Haras" />
-      <img src="img/vu_plane.jpg" alt="Galerie Haras" />
-      <!-- 7 images (duplicate for seamless loop) -->
-      <img src="img/chev.jpg" alt="Galerie Haras" />
-      <img src="img/cheval.jpg" alt="Galerie Haras" />
-      <img src="img/cheval_monter.jpg" alt="Galerie Haras" />
-      <img src="img/chevaux.jpg" alt="Galerie Haras" />
-      <img src="img/plus_beaux_chev.jpg" alt="Galerie Haras" />
-      <img src="img/saut.jpg" alt="Galerie Haras" />
-      <img src="img/vu_plane.jpg" alt="Galerie Haras" />
+      <!-- 12 photos des installations -->
+      <img src="img/installations/carriere-02.webp" alt="La carrière Toubin &amp; Clément" loading="lazy" />
+      <img src="img/installations/manege-02.webp" alt="Le manège couvert" loading="lazy" />
+      <img src="img/installations/piste-galop-02.webp" alt="La piste de galop" loading="lazy" />
+      <img src="img/installations/ecuries-allee-milieu-02.webp" alt="Les écuries, allée du milieu" loading="lazy" />
+      <img src="img/installations/ecuries-allee-droite-01.webp" alt="Les écuries, allée de droite" loading="lazy" />
+      <img src="img/installations/grange-aire-preparation-01.webp" alt="La grange et l'aire de préparation" loading="lazy" />
+      <img src="img/installations/paddocks-01.webp" alt="Chevaux au paddock" loading="lazy" />
+      <img src="img/installations/pres-grands-poneys-01.webp" alt="Le pré des grands poneys" loading="lazy" />
+      <img src="img/installations/pres-petits-poneys-01.webp" alt="Le pré des petits poneys" loading="lazy" />
+      <img src="img/installations/pres-chevaux-repos-01.webp" alt="Le pré des chevaux au repos" loading="lazy" />
+      <img src="img/installations/paddocks-02.webp" alt="Cheval au paddock" loading="lazy" />
+      <img src="img/installations/cour-01.webp" alt="La cour du haras" loading="lazy" />
+      <!-- même série en double pour la boucle continue -->
+      <img src="img/installations/carriere-02.webp" alt="La carrière Toubin &amp; Clément" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/manege-02.webp" alt="Le manège couvert" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/piste-galop-02.webp" alt="La piste de galop" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/ecuries-allee-milieu-02.webp" alt="Les écuries, allée du milieu" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/ecuries-allee-droite-01.webp" alt="Les écuries, allée de droite" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/grange-aire-preparation-01.webp" alt="La grange et l'aire de préparation" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/paddocks-01.webp" alt="Chevaux au paddock" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/pres-grands-poneys-01.webp" alt="Le pré des grands poneys" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/pres-petits-poneys-01.webp" alt="Le pré des petits poneys" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/pres-chevaux-repos-01.webp" alt="Le pré des chevaux au repos" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/paddocks-02.webp" alt="Cheval au paddock" loading="lazy" aria-hidden="true" />
+      <img src="img/installations/cour-01.webp" alt="La cour du haras" loading="lazy" aria-hidden="true" />
     </div>
   </div>
 </section>
@@ -461,28 +667,63 @@
   <div class="container">
     <div class="section-head">
       <p class="eyebrow gs-fade">Contact</p>
-      <h2 class="gs-fade">Nous trouver</h2>
+      <h2 class="gs-fade">Nous rencontrer</h2>
+      <p class="desc gs-fade">Une question, un projet, l'envie de venir découvrir le Haras ? Nous sommes à votre écoute.</p>
     </div>
-    <div class="contact-grid">
-      <div class="contact-people">
-        <div class="contact-card gs-stagger4">
-          <span class="role">Direction</span>
+
+    <!-- Portraits — fichiers attendus : img/marie_delphine.jpg et img/victorien.jpg -->
+    <div class="team-grid">
+      <div class="team-card gs-stagger4">
+        <img src="img/marie_delphine.jpg" alt="Marie-Delphine Debacq à cheval en concours" style="object-position:42% 30%;">
+        <div class="team-info">
+          <span class="role">Écurie de propriétaires · Concours</span>
           <h3>Marie-Delphine Debacq</h3>
-          <a class="phone" href="tel:0671005531">06 71 00 55 31</a>
+          <p class="activities">Gestion de l'écurie de propriétaires et accompagnement en concours.</p>
+          <a href="tel:0671005531"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>06 71 00 55 31</a>
+          <a href="mailto:haras.lesmoutonnieres@orange.fr"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>haras.lesmoutonnieres@orange.fr</a>
         </div>
-        <div class="contact-card gs-stagger4">
-          <span class="role">Direction</span>
+      </div>
+      <div class="team-card gs-stagger4">
+        <img src="img/victorien.jpg" alt="Victorien Besse à cheval en concours" style="object-position:50% 42%;">
+        <div class="team-info">
+          <span class="role">Débourrages · Cours · Stages</span>
           <h3>Victorien Besse</h3>
-          <a class="phone" href="tel:0786146698">07 86 14 66 98</a>
+          <p class="activities">Débourrage des jeunes chevaux, cours et stages de l'école d'équitation.</p>
+          <a href="tel:0786146698"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>07 86 14 66 98</a>
+          <a href="mailto:victorienbessepro@gmail.com"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>victorienbessepro@gmail.com</a>
         </div>
       </div>
+    </div>
+
+    <div class="location-grid">
       <div class="location-box gs-fade">
-        <h3>Val-au-Perche</h3>
-        <p>À 2h de Paris</p>
-        <p>À 1h de Chartres</p>
+        <h3>Nous trouver</h3>
+        <address>Haras des Moutonnières<br>Les Moutonnières — Le Theil-sur-Huisne<br>61260 Val-au-Perche</address>
+        <p>À 2 h de Paris</p>
+        <p>À 1 h de Chartres</p>
         <p>À 45 min du Mans</p>
-        <p style="margin-top:20px;color:var(--client-yellow);font-weight:600; font-size:1.1rem; border-top: 1px solid rgba(243,192,13,0.3); padding-top: 20px;">Propriété de 14 hectares en plein cœur du Perche.</p>
+        <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&destination=48.2762817,0.6228712" target="_blank" rel="noopener">Obtenir l'itinéraire</a>
+        <div class="location-notice">
+          <strong>Un petit coup de fil avant de venir</strong>
+          <p>Nous sommes souvent à cheval ou en extérieur : pensez à nous appeler avant de vous déplacer, pour être sûrs que nous puissions vous accueillir et prendre le temps de vous renseigner.</p>
+        </div>
       </div>
+      <div class="map-box gs-fade">
+        <iframe
+          src="https://www.google.com/maps?q=48.2762817,0.6228712&z=14&hl=fr&output=embed"
+          title="Carte — Haras des Moutonnières, Val-au-Perche"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="inscription-box gs-fade" id="inscription">
+      <div>
+        <h3>Inscription aux cours</h3>
+        <p>Les inscriptions aux cours se font exclusivement sur le site dédié aux adhérents. Créez votre compte, votre accès sera validé après vérification, puis réservez vos créneaux en ligne. Des cours particuliers y sont également disponibles selon les horaires proposés.</p>
+      </div>
+      <a class="btn btn-blue" href="https://harasdesmoutonnieres.fr/hdm61/" target="_blank" rel="noopener">Accéder au site d'inscription</a>
     </div>
   </div>
 </section>
@@ -492,6 +733,11 @@
     <a href="#home" class="nav-link" aria-label="Retour en haut">
       <img src="img/logo/logo.png" alt="Logo officiel Haras des Moutonnières" class="footer-logo">
     </a>
+    <p class="footer-social">
+      <a href="https://www.facebook.com/harasdesmoutonnieres" target="_blank" rel="noopener">Facebook</a> ·
+      <a href="https://instagram.com/haras.des.moutonnieres" target="_blank" rel="noopener">Instagram</a> ·
+      <a href="https://harasdesmoutonnieres.fr/hdm61/" target="_blank" rel="noopener">Inscription aux cours</a>
+    </p>
     <p>© 2026 <strong>Haras des Moutonnières by Chaya Aouate</strong> · Val-au-Perche</p>
     <p class="footer-sub">Centre équestre & poney-club au cœur du Perche — Équitation pour tous & formations fédérales</p>
   </div>
@@ -586,6 +832,20 @@
     }
   });
 
+  // Parallax on installation photos (vue aérienne + blocs alternés)
+  gsap.utils.toArray('[data-parallax]').forEach(img => {
+    gsap.fromTo(img, { yPercent: -8 }, {
+      yPercent: 8,
+      ease: "none",
+      scrollTrigger: {
+        trigger: img.parentElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+  });
+
   // Fade up animations
   gsap.utils.toArray('.gs-fade').forEach(el => {
     gsap.from(el, {
@@ -607,7 +867,7 @@
     { trigger: '.install-grid', elements: '.gs-stagger2' },
     { trigger: '.act-grid', elements: '.gs-stagger3' },
     { trigger: '.ts-grid', elements: '.gs-stagger5' },
-    { trigger: '.contact-people', elements: '.gs-stagger4' }
+    { trigger: '.team-grid', elements: '.gs-stagger4' }
   ];
 
   staggers.forEach(stag => {

@@ -40,3 +40,12 @@ out/
 # Fichiers de log
 logs
 *.log
+
+# Claude Code (config locale de preview)
+.claude/
+
+# Documents comptables
+factures, devis/
+
+# Photos brutes du client (non publiées)
+_photos_originales/
